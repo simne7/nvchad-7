@@ -1,6 +1,11 @@
 require "nvchad.options"
 
--- add yours here!
+-- Disable initial folding 
+vim.opt.foldenable = false
 
--- local o = vim.o
--- o.cursorlineopt ='both' -- to enable cursorline!
+-- Treesitter folding
+vim.wo.foldmethod = 'expr'
+vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+
+-- Virtual column at char 120
+vim.opt.colorcolumn = "120"

@@ -35,3 +35,5 @@ require "autocmds"
 vim.schedule(function()
   require "mappings"
 end)
+
+require("telescope").load_extension "projects"
