@@ -171,7 +171,7 @@ map("n", "<leader>li", "<cmd>Telescope lsp_implementations<cr>", { desc = "LSP i
 
 wkadd { { "<leader>r", group = "Refactor", icon = "" } }
 map("n", "<leader>rr", function()
-  require "nvchad.lsp.rename"
+  require "nvchad.lsp.renamer"
 end, { desc = "Rename" })
 
 --
