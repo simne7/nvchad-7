@@ -2,7 +2,8 @@
 --- @field namespace string namespace the log belongs to
 --- @see https://moritzhamann.com/blog/2024-10-27-logging-in-neovim.html
 
--- :lua require("myFileName").log("Some log message", vim.log.levels.INFO, {namespace="myNameSpace"})
+-- local myLogger = require("buflog").create_logger("namespace")
+-- myLogger.debug("debug message")
 
 local M = {}
 
@@ -31,7 +32,6 @@ M.log = function(msg, level, options)
     end
   end
 
-
   -- ensure `msg` is always a table to make processing simpler
   if type(msg) == "string" then
     msg = { msg }
@@ -52,12 +52,10 @@ M.log = function(msg, level, options)
   vim.api.nvim_buf_set_lines(buffer, -1, -1, true, complete_msg)
 end
 
-
 --- @param namespace string
 M.buffer_name = function(namespace)
   return "LOG-" .. namespace
 end
-
 
 --- @param buffer_name string
 M.find_log_buffer = function(buffer_name)
@@ -70,7 +68,6 @@ M.find_log_buffer = function(buffer_name)
   end
   return nil
 end
-
 
 --- @param namespace string
 M.create_logger = function(namespace)
