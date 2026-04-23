@@ -2,7 +2,7 @@
 --- @field namespace string namespace the log belongs to
 --- @see https://moritzhamann.com/blog/2024-10-27-logging-in-neovim.html
 
--- local myLogger = require("buflog").create_logger("namespace")
+-- local myLogger = require("lib.buflog").create_logger("namespace")
 -- myLogger.debug("debug message")
 
 local M = {}

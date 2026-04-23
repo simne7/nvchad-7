@@ -3,6 +3,7 @@ require "nvchad.mappings"
 local map = vim.keymap.set
 local del = vim.keymap.del
 local wkadd = require("which-key").add
+local buf = require "lib.buf"
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
@@ -92,6 +93,14 @@ map("n", "<leader>bs", "<cmd>enew<cr><cmd>Telescope filetypes<cr>", { desc = "Op
 map("n", "<leader>bY", "ggVGy", { desc = "Yank buffer" })
 map("n", "<leader>bP", "ggVGp", { desc = "Paste and replace buffer" })
 map("n", "<leader><tab>", "<cmd>b#<cr>", { desc = "Switch to previously edited buffer" })
+map("n", "<leader>bm", function()
+  local myLogger = require("lib.buflog").create_logger "namespace"
+  myLogger.debug "debug message"
+  buf.move_to_picked_window(false)
+end, { desc = "Move buffer to window" })
+map("n", "<leader>bM", function()
+  buf.move_to_picked_window(true)
+end, { desc = "Move buffer to window (stay)" })
 
 --
 -- projects
