@@ -193,7 +193,11 @@ wkadd {
     { "<leader>xU", "bvegUe", desc = "Uppercase word unter cursor", icon = "󰬵" },
   },
   { "<leader>xl", group = "Lines", icon = "" },
-  { "<leader>xls", "<cmd>Sort<cr>", desc = "Sort lines" },
+  {
+    mode = { "n", "v" },
+    { "<leader>xls", ":Sort<cr>", desc = "Sort lines" },
+    { "<leader>xlS", ":Sort!<cr>", desc = "Sort lines reverse" },
+  },
 }
 
 -- Trouble
