@@ -15,6 +15,7 @@ nvlsp.on_attach = function(_, bufnr)
   del("n", "<leader>wr", { buffer = bufnr }) -- remove folder from workspace -> <leader>lwr
   del("n", "<leader>wl", { buffer = bufnr }) -- list workspace folders -> <leader>lwl
   del("n", "<leader>ra", { buffer = bufnr }) -- NvRenamer -> <leader>rr
+  map("n", "<leader>rr", require "nvchad.lsp.renamer", { buffer = bufnr, desc = "Rename" })
 end
 
 -- see https://github.com/neovim/nvim-lspconfig?tab=readme-ov-file#configuration

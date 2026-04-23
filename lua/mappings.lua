@@ -170,9 +170,7 @@ map("n", "<leader>lr", "<cmd>Telescope lsp_references<cr>", { desc = "LSP refere
 map("n", "<leader>li", "<cmd>Telescope lsp_implementations<cr>", { desc = "LSP implementations()" })
 
 wkadd { { "<leader>r", group = "Refactor", icon = "" } }
-map("n", "<leader>rr", function()
-  require "nvchad.lsp.renamer"
-end, { desc = "Rename" })
+-- <leader>rr defined in configs/lspconfig.lua
 
 --
 -- Git
