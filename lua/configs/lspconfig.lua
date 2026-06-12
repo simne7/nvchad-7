@@ -29,7 +29,8 @@ local function root_pattern_exclude(opt)
     local fname = vim.api.nvim_buf_get_name(bufnr)
     local excluded_root = lsputil.root_pattern(opt.exclude)(fname)
     if not excluded_root then
-      on_dir(lsputil.root_pattern(opt.root)(fname))
+      local root = lsputil.root_pattern(opt.root)(fname)
+      if root then on_dir(root) end
     end
   end
 end
