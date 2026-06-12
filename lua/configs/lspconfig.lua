@@ -63,10 +63,33 @@ local servers = {
   },
 }
 
+-- Read a .lsprc file from the project root (searches upward from cwd).
+-- Format: disable = ["srv1", "srv2"]  (TOML, single or multiline)
+local function read_lsprc()
+  local root = vim.fs.root(vim.fn.getcwd(), ".lsprc")
+  if not root then return {} end
+  local f = io.open(root .. "/.lsprc", "r")
+  if not f then return {} end
+  local content = f:read("*a")
+  f:close()
+  local disabled = {}
+  local block = content:match("disable%s*=%s*%[(.-)%]")
+  if block then
+    for name in block:gmatch('"([^"]+)"') do
+      disabled[name] = true
+    end
+  end
+  return disabled
+end
+
+local disabled_servers = read_lsprc()
+
 for name, opts in pairs(servers) do
-  vim.lsp.enable(name)
-  if next(opts) ~= nil then
-    vim.lsp.config(name, opts)
+  if not disabled_servers[name] then
+    vim.lsp.enable(name)
+    if next(opts) ~= nil then
+      vim.lsp.config(name, opts)
+    end
   end
 end
 
