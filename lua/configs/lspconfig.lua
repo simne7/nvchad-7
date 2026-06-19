@@ -23,14 +23,16 @@ end
 ---@return fun(bufnr: integer, on_dir: fun(dir: string|nil))
 ---@see https://www.npbee.me/posts/deno-and-typescript-in-a-monorepo-neovim-lsp
 local function root_pattern_exclude(opt)
-  local lsputil = require('lspconfig.util')
+  local lsputil = require "lspconfig.util"
 
   return function(bufnr, on_dir)
     local fname = vim.api.nvim_buf_get_name(bufnr)
     local excluded_root = lsputil.root_pattern(opt.exclude)(fname)
     if not excluded_root then
       local root = lsputil.root_pattern(opt.root)(fname)
-      if root then on_dir(root) end
+      if root then
+        on_dir(root)
+      end
     end
   end
 end
@@ -41,10 +43,10 @@ local servers = {
   docker_compose_language_service = {},
   cssls = {},
   denols = {
-    root_dir = root_pattern_exclude({
+    root_dir = root_pattern_exclude {
       root = { "deno.json", "deno.jsonc", "deno.lock" },
-      exclude = {}
-    }),
+      exclude = {},
+    },
     single_file_support = false,
     settings = {},
   },
@@ -54,10 +56,10 @@ local servers = {
   pylsp = {},
   -- tailwindcss = {},
   ts_ls = {
-    root_dir = root_pattern_exclude({
+    root_dir = root_pattern_exclude {
       root = { "package.json" },
-      exclude = { "deno.json", "deno.jsonc", "deno.lock" }
-    }),
+      exclude = { "deno.json", "deno.jsonc", "deno.lock" },
+    },
     single_file_support = false,
     settings = {},
   },
@@ -67,15 +69,19 @@ local servers = {
 -- Format: disable = ["srv1", "srv2"]  (TOML, single or multiline)
 local function read_lsprc()
   local root = vim.fs.root(vim.fn.getcwd(), ".lsprc")
-  if not root then return {} end
+  if not root then
+    return {}
+  end
   local f = io.open(root .. "/.lsprc", "r")
-  if not f then return {} end
-  local content = f:read("*a")
+  if not f then
+    return {}
+  end
+  local content = f:read "*a"
   f:close()
   local disabled = {}
-  local block = content:match("disable%s*=%s*%[(.-)%]")
+  local block = content:match "disable%s*=%s*%[(.-)%]"
   if block then
-    for name in block:gmatch('"([^"]+)"') do
+    for name in block:gmatch '"([^"]+)"' do
       disabled[name] = true
     end
   end
