@@ -26,6 +26,38 @@ return {
     },
   },
 
+  -- Neovim 0.12 crashes with "attempt to call method 'range' (a nil value)"
+  -- inside get_range() when an injection match holds a nil content node.
+  -- This happens with streamed buffers (e.g. CodeCompanion) where the tree
+  -- changes between query execution and range extraction.
+  {
+    "nvim-treesitter/nvim-treesitter",
+    config = function(_, opts)
+      local _orig_get_parser = vim.treesitter.get_parser
+      vim.treesitter.get_parser = function(bufnr, lang, opts_p)
+        local parser = _orig_get_parser(bufnr, lang, opts_p)
+        if not parser or parser._nil_range_guard then
+          return parser
+        end
+        local _orig_parse = parser.parse
+        parser.parse = function(self, range)
+          local ok, a, b = pcall(_orig_parse, self, range)
+          if not ok then
+            if type(a) == "string" and a:find "attempt to call method 'range'" then
+              return self._trees or {}, false
+            end
+            error(a, 2)
+          end
+          return a, b
+        end
+        parser._nil_range_guard = true
+        return parser
+      end
+
+      require("nvim-treesitter.configs").setup(opts)
+    end,
+  },
+
   -- Sorting plugin for Neovim that supports line-wise and delimiter sorting.
   -- https://github.com/sQVe/sort.nvim
   { "sQVe/sort.nvim", cmd = { "Sort" } },
