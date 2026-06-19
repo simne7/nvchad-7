@@ -1,5 +1,7 @@
 require "nvchad.options"
 
+vim.opt.exrc = true
+
 -- Disable initial folding 
 vim.opt.foldenable = false
 
