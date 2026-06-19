@@ -89,6 +89,8 @@ return {
         purple = "#dc8ef3",
         md_purple = "#c678dd",
       },
+      console_timeout = 0,
+      auto_close_console = false,
     },
   },
 
